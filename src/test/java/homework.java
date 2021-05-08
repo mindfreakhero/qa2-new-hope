@@ -96,18 +96,13 @@ public class homework {
             List<WebElement> commentCount = elementsList.get(i).findElements(COMMENT_COUNT);
             String elementText = elementsList.get(i).getText();
             if (commentCount.isEmpty()) {
-                System.out.println("Article title: " + elementText);
-                System.out.println("Comments: 0");
-                System.out.println();
+                System.out.println("Article title: " + elementText + "\nComments: 0 \n");
             } else {
                 // create new string in element Text, which will contains only comment (chars between last "(" and last ")");
                 String onlyCommentsFromArticle = elementText.substring(elementText.lastIndexOf("(") + 1, elementText.lastIndexOf(")"));
                 String onlyArticleText = elementText.substring(0, elementText.lastIndexOf("("));
                 int comments = Integer.parseInt(onlyCommentsFromArticle);
-                System.out.println("Article title: " + onlyArticleText);
-                System.out.println("Comments: " + comments);
-                System.out.println();
-
+                System.out.println("Article title: " + onlyArticleText + "\nComments: " + comments + "\n");
             }
 
         }
