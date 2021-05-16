@@ -21,6 +21,11 @@ public class DelfiArticleCommentTest {
     private final By ARTICLE_PAGE_TITLE = By.xpath(".//h1[contains(@class, 'text-size-md-30')]");
     private final By ARTICLE_PAGE_COMMENTS = By.xpath(".//a[contains(@class, 'text-size-md-28')]");
 
+    private final By EACH_COMMENT = By.xpath(".//div[@class = 'comment']");
+    private final By MORE_REPLIES = By.xpath(".//button[@class = 'btn-loadmore small']");
+    private final By COMMENT_PAGE_TITLE = By.xpath(".//h1[@class = 'article-title']");
+    private final By REGISTERED_ANONYMUS_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
+
     // perenosim driver v class 4tobi on bil dostupen dlja metodov;
     private WebDriver driver;
 
@@ -40,10 +45,12 @@ public class DelfiArticleCommentTest {
 
         List<WebElement> articles = driver.findElements(HOME_PAGE_ARTICLE);
         // take 5th article;
-        WebElement article = articles.get(4);
+        WebElement article = articles.get(0);
 
         // get text from article
         String homePageTitle = article.findElement(HOME_PAGE_TITLE).getText();
+        // trim the spaces;
+        homePageTitle = homePageTitle.trim();
         // get comments count as int
         int homePageCommentsCount = getCommentsCount(HOME_PAGE_COMMENTS, article);
 
@@ -53,11 +60,44 @@ public class DelfiArticleCommentTest {
 
         // get text and comments as int w/o brackets;
         String articlePageTitle = driver.findElement(ARTICLE_PAGE_TITLE).getText();
+        articlePageTitle = articlePageTitle.trim();
+
         int articlePageCommentsCount = getCommentsCount(ARTICLE_PAGE_COMMENTS);
 
         // assertion if equals (expected, actual, error message)
         Assertions.assertEquals(homePageTitle, articlePageTitle, "Wrong title!");
         Assertions.assertEquals(homePageCommentsCount, articlePageCommentsCount, "Wrong comments count!");
+
+        // click on comments;
+        wait.until(ExpectedConditions.elementToBeClickable(ARTICLE_PAGE_COMMENTS));
+        driver.findElement(ARTICLE_PAGE_COMMENTS).click();
+
+        // get article title from comments;
+        String commentsPageTitle = driver.findElement(COMMENT_PAGE_TITLE).getText();
+
+        int commentsCount = 0;
+        // if registered/anonymus comments are present, calculate them; if not calculate each comment;
+        if (driver.findElements(REGISTERED_ANONYMUS_COMMENTS).isEmpty()) {
+
+            // how much comments are on the page;
+            commentsCount = driver.findElements(EACH_COMMENT).size();
+
+            // comments section has more replies section, where other comments are minimized;
+            // search for more replies element, remove brackets and rewrite comments count (comment from page + comment from more replies(for each iteration));
+            for (WebElement reply : driver.findElements(MORE_REPLIES)) {
+                commentsCount = commentsCount + removeBrackets(reply);
+            }
+
+        } else {
+            for (WebElement reply : driver.findElements(REGISTERED_ANONYMUS_COMMENTS)) {
+            commentsCount = commentsCount + removeBrackets(reply);
+            }
+        }
+
+
+        Assertions.assertEquals(homePageTitle, commentsPageTitle, "Wrong title!");
+        Assertions.assertEquals(homePageCommentsCount, commentsCount, "Wrong comments count!");
+
 
         // ------ FOR CYCLE --------
 //        for (int i = 0; i < titles.size(); i++) {
@@ -102,16 +142,16 @@ public class DelfiArticleCommentTest {
     // remove brackets from comments and parse String into int;
     private int removeBrackets(WebElement we) {
         String commentsCountText = we.getText();
-        commentsCountText = commentsCountText.substring(1, commentsCountText.length() - 1);// (36) -> 36
+        commentsCountText = commentsCountText.substring(commentsCountText.lastIndexOf("(") + 1, commentsCountText.lastIndexOf(")"));// (36) -> 36
         return Integer.parseInt(commentsCountText); // 36 (String) -> 36 (int)
 
     }
 
     // annotation to initialize this method after each test;
-    @AfterEach
-    public void closeBrowser() {
-        driver.close();
-    }
+//    @AfterEach
+//    public void closeBrowser() {
+//        driver.close();
+//    }
 }
 
 
