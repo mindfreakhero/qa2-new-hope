@@ -1,3 +1,5 @@
+package pageobject;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -9,26 +11,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pageobject.pages.BaseFunc;
+import pageobject.pages.HomePage;
 
-import java.util.Collection;
 import java.util.List;
 
 // checks if article title/comment count in homepage and  article title/ comment count  in article page are equal;
 public class DelfiArticleCommentTest {
-    private final By ACCEPT_COOKIES_BTN = By.xpath(".//button[@mode = 'primary']");
-    private final By HOME_PAGE_TITLE = By.xpath(".//h1[contains(@class, 'headline__title')]");
-    private final By HOME_PAGE_ARTICLE = By.tagName("article");
-    private final By HOME_PAGE_COMMENTS = By.xpath(".//a[contains(@class, 'comment-count')]");
-
-    private final By ARTICLE_PAGE_TITLE = By.xpath(".//h1[contains(@class, 'text-size-md-30')]");
-    private final By ARTICLE_PAGE_COMMENTS = By.xpath(".//a[contains(@class, 'text-size-md-28')]");
-
-    private final By EACH_COMMENT = By.xpath(".//div[@class = 'comment']");
-    private final By MORE_REPLIES = By.xpath(".//button[@class = 'btn-loadmore small']");
-    private final By COMMENT_PAGE_TITLE = By.xpath(".//h1[@class = 'article-title']");
-    private final By REGISTERED_ANONYMUS_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
-
-    private final Logger LOGGER = LogManager.getLogger(DelfiArticleCommentTest.class);
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     // perenosim driver v class 4tobi on bil dostupen dlja metodov;
     private WebDriver driver;
@@ -38,22 +28,13 @@ public class DelfiArticleCommentTest {
     public void titleAndCommentsCountCheck() {
         LOGGER.info("This test is checking title and comments count in home page, article page and comments page.");
 
-        LOGGER.info("Setting driver location");
-        System.setProperty("webdriver.chrome.driver", "c://chromedriver.exe");
+        // create basefunc copy which contains chromedriver path and new driver/ windows maximize;
+        BaseFunc baseFunc = new BaseFunc();
+        baseFunc.openPage("http://delfi.lv");
 
-        LOGGER.info("Opening browser window");
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
-
-        LOGGER.info("Opening delfi.lv");
-        driver.get("http://delfi.lv");
-
-        WebDriverWait wait = new WebDriverWait(driver, 10);
-        LOGGER.info("Waiting for accept cookies button");
-        wait.until(ExpectedConditions.elementToBeClickable(ACCEPT_COOKIES_BTN));
-
-        LOGGER.info("Accepting cookies");
-        driver.findElement(ACCEPT_COOKIES_BTN).click();
+        // home page ispolzuet teku6ee okno (basefunc);
+        HomePage homePage = new HomePage(baseFunc);
+        homePage.acceptCookies();
 
         List<WebElement> articles = driver.findElements(HOME_PAGE_ARTICLE);
         // take 5th article;
@@ -163,10 +144,10 @@ public class DelfiArticleCommentTest {
     }
 
     // annotation to initialize this method after each test;
-//    @AfterEach
-//    public void closeBrowser() {
-//        driver.close();
-//    }
+    @AfterEach
+    public void closeBrowser() {
+        driver.close();
+    }
 }
 
 
