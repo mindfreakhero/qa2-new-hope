@@ -1,3 +1,5 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,21 +28,31 @@ public class DelfiArticleCommentTest {
     private final By COMMENT_PAGE_TITLE = By.xpath(".//h1[@class = 'article-title']");
     private final By REGISTERED_ANONYMUS_COMMENTS = By.xpath(".//span[@class = 'type-cnt']");
 
+    private final Logger LOGGER = LogManager.getLogger(DelfiArticleCommentTest.class);
+
     // perenosim driver v class 4tobi on bil dostupen dlja metodov;
     private WebDriver driver;
 
 
     @Test
     public void titleAndCommentsCountCheck() {
+        LOGGER.info("This test is checking title and comments count in home page, article page and comments page.");
+
+        LOGGER.info("Setting driver location");
         System.setProperty("webdriver.chrome.driver", "c://chromedriver.exe");
+
+        LOGGER.info("Opening browser window");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
+        LOGGER.info("Opening delfi.lv");
         driver.get("http://delfi.lv");
 
         WebDriverWait wait = new WebDriverWait(driver, 10);
+        LOGGER.info("Waiting for accept cookies button");
         wait.until(ExpectedConditions.elementToBeClickable(ACCEPT_COOKIES_BTN));
 
+        LOGGER.info("Accepting cookies");
         driver.findElement(ACCEPT_COOKIES_BTN).click();
 
         List<WebElement> articles = driver.findElements(HOME_PAGE_ARTICLE);
@@ -48,14 +60,17 @@ public class DelfiArticleCommentTest {
         WebElement article = articles.get(0);
 
         // get text from article
+        LOGGER.info("Getting article title and comments count");
         String homePageTitle = article.findElement(HOME_PAGE_TITLE).getText();
         // trim the spaces;
         homePageTitle = homePageTitle.trim();
         // get comments count as int
         int homePageCommentsCount = getCommentsCount(HOME_PAGE_COMMENTS, article);
+        LOGGER.info("Title is: " + homePageTitle + " and comment count is " + homePageCommentsCount);
 
 
         // click at article (article page is opened);
+        LOGGER.info("Opening article");
         article.findElement(HOME_PAGE_TITLE).click();
 
         // get text and comments as int w/o brackets;
