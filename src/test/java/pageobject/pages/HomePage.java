@@ -48,7 +48,7 @@ public class HomePage {
         LOGGER.info("Getting articles + " + (id + 1) + " title");
         // WebElement article = getArticleById(id);
         // article = parent, TITLE = child;
-        return baseFunc.getText(getArticleById(id), TITLE);
+        return baseFunc.getText(getArticleById(id), TITLE).trim();
     }
 
     public int getCommentsCount(int id) {

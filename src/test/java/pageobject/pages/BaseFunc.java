@@ -22,7 +22,7 @@ public class BaseFunc {
     // constuctor
     public BaseFunc() {
         LOGGER.info("Starting web browser");
-        System.setProperty("webdriver.chrome.driver", "c://chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "c://Program Files/chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().window().maximize();
 
