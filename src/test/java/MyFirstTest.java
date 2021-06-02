@@ -32,3 +32,23 @@ public class MyFirstTest {
         System.out.println(first + second);
     }
 }
+
+// ------ FOR CYCLE --------
+//        for (int i = 0; i < titles.size(); i++) {
+//            if (!titles.get(i).getText().isEmpty()) { //!true = false, if not empty;
+//                System.out.println(i + ":" + titles.get(i).getText());
+//            }
+//
+//
+//        }
+//        ------ FOR EACH. title - required list, WebElement we - where we put elements; ---------
+//        for (WebElement we : titles) {
+//            //           if (!we.getText().isEmpty()) {
+//            //               System.out.println(we.getText());
+//            //          }else {
+//            //              System.out.println("-----------");
+//            //          }
+//
+//            ----------- TERNARY условие ? true : false (else) -------------------
+//            System.out.println(we.getText().isEmpty() ? "---------" : we.getText());
+//            }

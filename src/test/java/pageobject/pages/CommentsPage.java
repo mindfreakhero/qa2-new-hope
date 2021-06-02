@@ -13,4 +13,10 @@ public class CommentsPage {
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
+    private BaseFunc baseFunc;
+
+    public CommentsPage(BaseFunc baseFunc) {
+        this.baseFunc = baseFunc;
+    }
+
 }
