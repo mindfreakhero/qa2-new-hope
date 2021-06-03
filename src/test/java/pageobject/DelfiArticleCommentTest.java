@@ -5,14 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import pageobject.pages.ArticlePage;
 import pageobject.pages.BaseFunc;
 import pageobject.pages.CommentsPage;
 import pageobject.pages.HomePage;
 
-import java.util.List;
 
 // checks if article title/comment count in homepage and  article title/ comment count  in article page are equal;
 public class DelfiArticleCommentTest {
@@ -51,45 +48,33 @@ public class DelfiArticleCommentTest {
         Assertions.assertEquals(homePageTitle, articlePageTitle, "Wrong title!");
         Assertions.assertEquals(homePageCommentsCount, articlePageCommentsCount, "Wrong comments count!");
 
+        // click on comments;
         CommentsPage commentsPage = articlePage.openCommentsPage();
 
-        // click on comments;
-//        wait.until(ExpectedConditions.elementToBeClickable(ARTICLE_PAGE_COMMENTS));
-//        driver.findElement(ARTICLE_PAGE_COMMENTS).click();
-//
-//        // get article title from comments;
-//        String commentsPageTitle = driver.findElement(COMMENT_PAGE_TITLE).getText();
-//
-//        int commentsCount = 0;
-//        // if registered/anonymus comments are present, calculate them; if not calculate each comment;
-//        if (driver.findElements(REGISTERED_ANONYMUS_COMMENTS).isEmpty()) {
-//
-//            // how much comments are on the page;
-//            commentsCount = driver.findElements(EACH_COMMENT).size();
-//
-//            // comments section has more replies section, where other comments are minimized;
-//            // search for more replies element, remove brackets and rewrite comments count (comment from page + comment from more replies(for each iteration));
-//            for (WebElement reply : driver.findElements(MORE_REPLIES)) {
-//                commentsCount = commentsCount + removeBrackets(reply);
-//            }
-//
-//        } else {
-//            for (WebElement reply : driver.findElements(REGISTERED_ANONYMUS_COMMENTS)) {
-//                commentsCount = commentsCount + removeBrackets(reply);
-//            }
-//        }
+        // get article title from comments;
+        String commentsPageTitle = commentsPage.getTitle();
 
+        // if registered/anonymus comments are present, calculate them; if not calculate each comment;
+        int commentsPageCommentsCount = 0;
+        if (commentsPage.getRegisteredAndAnonymusComments().isEmpty()) {
 
-//        Assertions.assertEquals(homePageTitle, commentsPageTitle, "Wrong title!");
-//        Assertions.assertEquals(homePageCommentsCount, commentsCount, "Wrong comments count!");
+            // comments section has more replies section, where other comments are minimized;
+            // search for more replies element, remove brackets and rewrite comments count (comment from page + comment from more replies(for each iteration));
+            commentsPageCommentsCount = commentsPage.calculateEachComment();
+        } else {
+            commentsPageCommentsCount = commentsPage.calculateRegisteredAndAnonymusComments();
+        }
 
+        Assertions.assertEquals(homePageTitle, commentsPageTitle, "Wrong title!");
+        Assertions.assertEquals(homePageCommentsCount, commentsPageCommentsCount, "Wrong comments count!");
     }
+
 
     // annotation to initialize this method after each test;
-    @AfterEach
-    public void closeBrowser() {
-        baseFunc.closeBrowser();
-    }
+      @AfterEach
+      public void closeBrowser() {
+         baseFunc.closeBrowser();
+     }
 }
 
 

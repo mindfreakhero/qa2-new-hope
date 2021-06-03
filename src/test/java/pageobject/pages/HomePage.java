@@ -59,8 +59,7 @@ public class HomePage {
         } else {
             String commentsCountToParse = baseFunc.getText(getArticleById(id), COMMENTS);
             // remove brackets from comments and parse String into int;
-            commentsCountToParse = commentsCountToParse.substring(commentsCountToParse.lastIndexOf("(") + 1, commentsCountToParse.lastIndexOf(")")); //(36) -> 36
-            return Integer.parseInt(commentsCountToParse);
+            return baseFunc.removeBracketsAndParseToInt(commentsCountToParse);
         }
     }
 

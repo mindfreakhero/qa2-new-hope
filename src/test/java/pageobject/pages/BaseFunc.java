@@ -55,7 +55,7 @@ public class BaseFunc {
         return driver.findElements(locator);
     }
 
-    public List<WebElement> findElements (WebElement parent, By child) {
+    public List<WebElement> findElements(WebElement parent, By child) {
         LOGGER.info("Getting all child elements");
         return parent.findElements(child);
     }
@@ -69,6 +69,27 @@ public class BaseFunc {
         LOGGER.info("Getting text by locator");
         return wait.until(ExpectedConditions.visibilityOfElementLocated(locator)).getText();
 
+    }
+
+    public String getText(WebElement we) {
+        LOGGER.info("Getting text from WebElement");
+        wait.until(ExpectedConditions.visibilityOf(we));
+        String text = we.getText();
+        return text;
+
+    }
+
+    public int removeBracketsAndParseToInt(String number) {
+        LOGGER.info("Removing brackets and parsing int");
+        number = number.substring(number.lastIndexOf("(") + 1, number.lastIndexOf(")")); //(36) -> 36
+        return Integer.parseInt(number);
+    }
+
+    public int removeBracketsAndParseToInt(WebElement we) {
+        LOGGER.info("Removing brackets and parsing int");
+        String number = getText(we);
+        number = number.substring(number.lastIndexOf("(") + 1, number.lastIndexOf(")")); //(36) -> 36
+        return Integer.parseInt(number);
     }
 
     public void closeBrowser() {
