@@ -1,11 +1,19 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
+// esli ne nado deserializitj vesj json, stavim @;
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class WeatherResponse {
     //vlozhili coord v response;
     private Coord coord;
-    private List<Weather> weather;
+
+    // in json "weather", in list must be "weathers";
+    @JsonProperty("weather")
+    private List<Weather> weathers;
     private String base;
     private Main main;
     private int visibility;
@@ -26,11 +34,11 @@ public class WeatherResponse {
     }
 
     public List<Weather> getWeather() {
-        return weather;
+        return weathers;
     }
 
     public void setWeather(List<Weather> weather) {
-        this.weather = weather;
+        this.weathers = weather;
     }
 
     public String getBase() {
