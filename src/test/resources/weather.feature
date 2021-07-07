@@ -8,10 +8,9 @@ Feature: Testing weather endpoint
       | lon | 145.77 |
       | lat | -16.92 |
     Then weather contains:
-      | id          | 802              |
-      | main        | Clouds           |
-      | description | scattered clouds |
-      | icon        | 03n              |
+      | id  | main   | description      | icon |
+      | 802 | Clouds | scattered clouds | 03n  |
+
     And base is "stations"
     And main is:
       | temp     | 300.15 |
@@ -19,13 +18,13 @@ Feature: Testing weather endpoint
       | humidity | 74     |
       | temp_min | 300.15 |
       | temp_max | 300.15 |
-    And visibility is "10000"
+    And visibility is 10000
     And wind is:
       | speed | 3.6 |
       | deg   | 160 |
     And clouds are:
       | all | 40 |
-    And dt is "1485790200"
+    And dt is 1485790200
     And sys is:
       | type    | 1          |
       | id      | 8166       |
@@ -33,7 +32,7 @@ Feature: Testing weather endpoint
       | country | AU         |
       | sunrise | 1485720272 |
       | sunset  | 1485766550 |
-    And id is "2172797"
+    And id is 2172797
     And name is "Cairns"
     And cod is 200
 
