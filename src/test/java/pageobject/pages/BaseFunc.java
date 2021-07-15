@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.List;
 
@@ -60,6 +61,11 @@ public class BaseFunc {
         return parent.findElements(child);
     }
 
+    public WebElement findElement(By locator){
+        LOGGER.info("Getting an element");
+        return driver.findElement(locator);
+    }
+
     public String getText(WebElement parent, By child) {
         LOGGER.info("Getting text for child element by locator");
         return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, child)).getText();
@@ -98,5 +104,17 @@ public class BaseFunc {
         if (driver != null) {
             driver.close();
         }
+    }
+
+    public void selectFromDropDown(By locator, String dropDownItem) {
+        LOGGER.info("Selecting from dropdown menu");
+        Select select = new Select(findElement(locator));
+        select.selectByVisibleText(dropDownItem);
+    }
+
+    public void inputValue(By locator, String text){
+        LOGGER.info("Inputting some value");
+        WebElement value = findElement(locator);
+        value.sendKeys(text);
     }
 }
