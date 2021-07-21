@@ -1,9 +1,9 @@
-package pageobject.pages;
+package pageobject.tickets.pages;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.Select;
+import pageobject.BaseFunc;
 
 public class MainReservationPage {
 
@@ -19,19 +19,10 @@ public class MainReservationPage {
         this.baseFunc = baseFunc;
     }
 
-    public void selectFrom() {
-        LOGGER.info("Selecting departure");
-        baseFunc.selectFromDropDown(DEPARTURE_DROPDOWN, "RIX");
-
-    }
-
-    public void selectTo() {
-        LOGGER.info("Selecting arrival");
-        baseFunc.selectFromDropDown(ARRIVAL_DROPDOWN, "SFO");
-    }
-
-    public SecondReservationPage clickOnGo() {
-        LOGGER.info("Clicking on GoGoGo!");
+    public SecondReservationPage selectAirports(String departure, String arrival) {
+        LOGGER.info("Selection Airports");
+        baseFunc.selectFromDropDown(DEPARTURE_DROPDOWN, departure);
+        baseFunc.selectFromDropDown(ARRIVAL_DROPDOWN, arrival);
         baseFunc.click(GO_BUTTON);
         return new SecondReservationPage(baseFunc);
     }

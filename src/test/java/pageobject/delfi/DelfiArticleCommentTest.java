@@ -1,14 +1,14 @@
-package pageobject;
+package pageobject.delfi;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import pageobject.pages.ArticlePage;
-import pageobject.pages.BaseFunc;
-import pageobject.pages.CommentsPage;
-import pageobject.pages.HomePage;
+import pageobject.delfi.pages.ArticlePage;
+import pageobject.delfi.pages.CommentsPage;
+import pageobject.delfi.pages.HomePage;
+import pageobject.BaseFunc;
 
 
 // checks if article title/comment count in homepage and  article title/ comment count  in article page are equal;

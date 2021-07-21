@@ -1,4 +1,4 @@
-package pageobject.pages;
+package pageobject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -61,7 +61,7 @@ public class BaseFunc {
         return parent.findElements(child);
     }
 
-    public WebElement findElement(By locator){
+    public WebElement findElement(By locator) {
         LOGGER.info("Getting an element");
         return driver.findElement(locator);
     }
@@ -107,12 +107,12 @@ public class BaseFunc {
     }
 
     public void selectFromDropDown(By locator, String dropDownItem) {
-        LOGGER.info("Selecting from dropdown menu");
+        LOGGER.info("Selecting" + dropDownItem + " from dropdown menu");
         Select select = new Select(findElement(locator));
         select.selectByVisibleText(dropDownItem);
     }
 
-    public void inputValue(By locator, String text){
+    public void inputValue(By locator, String text) {
         LOGGER.info("Inputting some value");
         WebElement value = findElement(locator);
         value.sendKeys(text);

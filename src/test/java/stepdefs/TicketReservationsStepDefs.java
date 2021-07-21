@@ -4,20 +4,27 @@ import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import model.Reservation;
-import model.ReservationsResponse;
 import org.junit.jupiter.api.Assertions;
-import pageobject.pages.TicketReservationTest;
+import org.openqa.selenium.WebElement;
+import pageobject.BaseFunc;
+import pageobject.tickets.pages.MainReservationPage;
+import pageobject.tickets.pages.SecondReservationPage;
 import requesters.ReservationsRequestor;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Map;
 
 public class TicketReservationsStepDefs {
     private List<Reservation> ReservationsList;
+    private Reservation given = new Reservation();
     private Reservation lastReservation;
+
+    private BaseFunc baseFunc;
+    private MainReservationPage mainReservationPage;
+    private SecondReservationPage secondReservationPage;
 
     @Given("we are requesting list of reservations")
     public void request_list() throws IOException {
@@ -32,7 +39,6 @@ public class TicketReservationsStepDefs {
     }
 
 
-
     @Then("we are printing list of reservations in console")
     public void print_reservations() {
 
@@ -42,18 +48,18 @@ public class TicketReservationsStepDefs {
 
     }
 
-    @Given("a new reservation with default data is created")
-    public void create_new_reservation() {
-        TicketReservationTest reservationTest = new TicketReservationTest();
-        reservationTest.reservationCheck();
-    }
+//    @Given("a new reservation with default data is created")
+//    public void create_new_reservation() {
+//        TicketReservationTest reservationTest = new TicketReservationTest();
+//        reservationTest.reservationCheck();
+//    }
 
 
     @Then("response contains the following:")
     public void response_contains(DataTable reservationList) {
         List<Map<String, String>> reservations = reservationList.asMaps();
 
-        for(int i = 0; i < reservations.size(); i++) {
+        for (int i = 0; i < reservations.size(); i++) {
             Map<String, String> expectedResponse = reservations.get(i);
 
             Assertions.assertEquals(expectedResponse.get("name"), lastReservation.getName(), "Wrong name!");
@@ -68,6 +74,48 @@ public class TicketReservationsStepDefs {
             Assertions.assertEquals(expectedResponse.get("seat"), lastReservation.getSeat(), "Wrong seat!");
         }
 
+    }
+
+    @Given("flight from {string} to {string}")
+    public void set_airports(String departure, String arrival) {
+        given.setAfrom(departure);
+        given.setAto(arrival);
+
+    }
+
+    @Given("passenger info:")
+    public void set_info(Map<String, String> info) {
+        given.setName(info.get("name"));
+        given.setSurname(info.get("surname"));
+        given.setDiscount(info.get("discount"));
+        given.setAdults(Integer.parseInt(info.get("adults")));
+        given.setChildren(Integer.parseInt(info.get("children")));
+        given.setBugs(Integer.parseInt(info.get("bugs")));
+        given.setFullDate(info.get("flight"));
+    }
+
+    @When("seat number is: {int}")
+    public void set_seat_nr(int seatNumber) {
+        given.setSeat(seatNumber);
+    }
+
+    @When("we are opening home page")
+    public void open_home_page() {
+        baseFunc = new BaseFunc();
+        baseFunc.openPage("http://qaguru.lv:8089/tickets/");
+        mainReservationPage = new MainReservationPage(baseFunc);
+    }
+
+    @When("selecting airports")
+    public void selecting_airports() {
+        secondReservationPage = mainReservationPage.selectAirports(given.getAfrom(), given.getAto());
+    }
+
+    @Then("airports are displayed on second page")
+    public void check_airports() {
+        List<WebElement> airports = secondReservationPage.getAirports();
+        Assertions.assertEquals(given.getAfrom(), airports.get(0).getText(), "Wrong departure name!");
+        Assertions.assertEquals(given.getAto(), airports.get(1).getText(), "Wrong arrival name");
     }
 }
 

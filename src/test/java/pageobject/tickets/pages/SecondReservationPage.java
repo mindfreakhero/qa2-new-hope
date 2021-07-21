@@ -1,8 +1,12 @@
-package pageobject.pages;
+package pageobject.tickets.pages;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import pageobject.BaseFunc;
+
+import java.util.List;
 
 public class SecondReservationPage {
 
@@ -16,6 +20,7 @@ public class SecondReservationPage {
     private final By BOOK_BTN = By.id("book2");
     private final By SEAT_22_BTN = By.xpath(".//div[@onclick = 'seat(22)']");
     private final By FINAL_BOOK_BTN = By.id("book3");
+    private final By AIRPORT_NAME = By.xpath(".//span[@class = 'bTxt']");
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
     private BaseFunc baseFunc;
@@ -36,7 +41,7 @@ public class SecondReservationPage {
 
     public void inputDiscount() {
         LOGGER.info("Inputting a discount");
-        baseFunc.inputValue(DISCOUNT, "hello");
+        baseFunc.inputValue(DISCOUNT, "CCCCCC");
     }
 
     public void inputAdults() {
@@ -73,5 +78,9 @@ public class SecondReservationPage {
         LOGGER.info("Clicking on book");
         baseFunc.click(FINAL_BOOK_BTN);
 
+    }
+
+    public List<WebElement> getAirports() {
+        return baseFunc.findElements(AIRPORT_NAME);
     }
 }

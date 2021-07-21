@@ -2,17 +2,18 @@ package model;
 
 public class Reservation {
 
-    private String id;
+    private long id;
     private String name;
     private String Surname;
     private String afrom;
     private String ato;
-    private String bugs;
+    private int bugs;
     private String discount;
-    private String children;
-    private String flight;
-    private String adults;
-    private String seat;
+    private int children;
+    private int flight;
+    private int adults;
+    private int seat;
+    private String fullDate;
 
     @Override
     public String toString() {
@@ -29,11 +30,11 @@ public class Reservation {
                 "Seat: " + seat + '\n';
     }
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -69,11 +70,11 @@ public class Reservation {
         this.ato = ato;
     }
 
-    public String getBugs() {
+    public int getBugs() {
         return bugs;
     }
 
-    public void setBugs(String bugs) {
+    public void setBugs(int bugs) {
         this.bugs = bugs;
     }
 
@@ -85,35 +86,43 @@ public class Reservation {
         this.discount = discount;
     }
 
-    public String getChildren() {
+    public int getChildren() {
         return children;
     }
 
-    public void setChildren(String children) {
+    public void setChildren(int children) {
         this.children = children;
     }
 
-    public String getFlight() {
+    public int getFlight() {
         return flight;
     }
 
-    public void setFlight(String flight) {
+    public void setFlight(int flight) {
         this.flight = flight;
     }
 
-    public String getAdults() {
+    public int getAdults() {
         return adults;
     }
 
-    public void setAdults(String adults) {
+    public void setAdults(int adults) {
         this.adults = adults;
     }
 
-    public String getSeat() {
+    public int getSeat() {
         return seat;
     }
 
-    public void setSeat(String seat) {
+    public void setSeat(int seat) {
         this.seat = seat;
+    }
+
+    public String getFullDate() {
+        return fullDate;
+    }
+
+    public void setFullDate(String fullDate) {
+        this.fullDate = fullDate;
     }
 }
