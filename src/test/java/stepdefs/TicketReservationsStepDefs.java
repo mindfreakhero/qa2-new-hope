@@ -25,6 +25,7 @@ public class TicketReservationsStepDefs {
     private BaseFunc baseFunc;
     private MainReservationPage mainReservationPage;
     private SecondReservationPage secondReservationPage;
+    Map<String, String> info;
 
     @Given("we are requesting list of reservations")
     public void request_list() throws IOException {
@@ -90,7 +91,7 @@ public class TicketReservationsStepDefs {
         given.setDiscount(info.get("discount"));
         given.setAdults(Integer.parseInt(info.get("adults")));
         given.setChildren(Integer.parseInt(info.get("children")));
-        given.setBugs(Integer.parseInt(info.get("bugs")));
+        given.setBugs(Integer.parseInt(info.get("luggage")));
         given.setFullDate(info.get("flight"));
     }
 
@@ -116,6 +117,25 @@ public class TicketReservationsStepDefs {
         List<WebElement> airports = secondReservationPage.getAirports();
         Assertions.assertEquals(given.getAfrom(), airports.get(0).getText(), "Wrong departure name!");
         Assertions.assertEquals(given.getAto(), airports.get(1).getText(), "Wrong arrival name");
+    }
+
+    @When("we are submitting passenger info")
+    public void submit_passenger_info() {
+        secondReservationPage.inputName(given.getName());
+        secondReservationPage.inputSurname(given.getSurname());
+        secondReservationPage.inputDiscount(given.getDiscount());
+        secondReservationPage.inputAdults(given.getAdults());
+        secondReservationPage.inputChildren(given.getChildren());
+        secondReservationPage.inputLuggage(given.getBugs());
+        secondReservationPage.selectFlightDate(given.getFullDate());
+        secondReservationPage.clickOnPrice();
+
+    }
+
+    @Then("name appears in summary")
+    public void check_name_in_summary() {
+        List<WebElement> summary = secondReservationPage.getSummary();
+        Assertions.assertEquals(given.getName(), summary.get(0).getText(), "Wrong name in summary");
     }
 }
 

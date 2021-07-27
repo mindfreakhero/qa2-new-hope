@@ -53,6 +53,7 @@ public class BaseFunc {
 
     public List<WebElement> findElements(By locator) {
         LOGGER.info("Getting list of elements by: " + locator);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return driver.findElements(locator);
     }
 
@@ -117,4 +118,5 @@ public class BaseFunc {
         WebElement value = findElement(locator);
         value.sendKeys(text);
     }
+
 }

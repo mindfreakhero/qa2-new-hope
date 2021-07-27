@@ -17,8 +17,8 @@ Feature: check if reservation is saved correctly;
     And selecting airports
     Then airports are displayed on second page
 
-#    When we are submitting passenger info
-#    Then name appears in summary
+    When we are submitting passenger info
+    Then name appears in summary
 #    And price calculated: 3020 EUR
 #    And reservation number appears
 #

@@ -21,6 +21,8 @@ public class SecondReservationPage {
     private final By SEAT_22_BTN = By.xpath(".//div[@onclick = 'seat(22)']");
     private final By FINAL_BOOK_BTN = By.id("book3");
     private final By AIRPORT_NAME = By.xpath(".//span[@class = 'bTxt']");
+    private final By SUMMARY = By.xpath("//*[@id='response']/span[@class = 'bTxt']");
+    private final By GET_PRICE_BTN = By.xpath(".//span[@onclick = 'setLang();']");
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
     private BaseFunc baseFunc;
@@ -29,39 +31,39 @@ public class SecondReservationPage {
         this.baseFunc = baseFunc;
     }
 
-    public void inputName() {
+    public void inputName(String name) {
         LOGGER.info("Inputting a name");
-        baseFunc.inputValue(NAME, "Anna");
+        baseFunc.inputValue(NAME, name);
     }
 
-    public void inputSurname() {
+    public void inputSurname(String surname) {
         LOGGER.info("Inputting a surname");
-        baseFunc.inputValue(SURNAME, "Vi");
+        baseFunc.inputValue(SURNAME, surname);
     }
 
-    public void inputDiscount() {
+    public void inputDiscount(String discount) {
         LOGGER.info("Inputting a discount");
-        baseFunc.inputValue(DISCOUNT, "CCCCCC");
+        baseFunc.inputValue(DISCOUNT, discount);
     }
 
-    public void inputAdults() {
+    public void inputAdults(int adults) {
         LOGGER.info("Inputting an adults count");
-        baseFunc.inputValue(HOW_MANY_TRAVELERS, "3");
+        baseFunc.inputValue(HOW_MANY_TRAVELERS, String.valueOf(adults));
     }
 
-    public void inputChildren() {
+    public void inputChildren(int children) {
         LOGGER.info("Inputting a children count");
-        baseFunc.inputValue(HOW_MANY_CHILDREN, "0");
+        baseFunc.inputValue(HOW_MANY_CHILDREN,  String.valueOf(children));
     }
 
-    public void inputLuggage() {
+    public void inputLuggage(int bugs) {
         LOGGER.info("Inputting a luggage count");
-        baseFunc.inputValue(LUGGAGE, "1");
+        baseFunc.inputValue(LUGGAGE, String.valueOf(bugs));
     }
 
-    public void selectFlightDate() {
+    public void selectFlightDate(String flight) {
         LOGGER.info("Selecting flight date!");
-        baseFunc.selectFromDropDown(FLIGHT_DATE, "17-05-2018");
+        baseFunc.selectFromDropDown(FLIGHT_DATE, flight);
     }
 
     public void clickOnBook() {
@@ -82,5 +84,15 @@ public class SecondReservationPage {
 
     public List<WebElement> getAirports() {
         return baseFunc.findElements(AIRPORT_NAME);
+    }
+
+    public List<WebElement> getSummary(){
+        LOGGER.info("Getting summary!");
+    return baseFunc.findElements(SUMMARY);
+    }
+
+    public void clickOnPrice(){
+        LOGGER.info("Getting price");
+        baseFunc.click(GET_PRICE_BTN);
     }
 }
