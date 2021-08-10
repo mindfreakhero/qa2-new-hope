@@ -1,5 +1,6 @@
 Feature: check if reservation is saved correctly;
 
+  @close-browser
   Scenario: check if reservation is saved correctly
   #sna4ala preconditions, chobi ih mozhno bilo menjatj vhodnije dannije
     Given flight from "RIX" to "SVO"
@@ -18,19 +19,17 @@ Feature: check if reservation is saved correctly;
     Then airports are displayed on second page
 
     When we are submitting passenger info
+
     Then name appears in summary
-#    And price calculated: 3020 EUR
-#    And reservation number appears
-#
-#    When we are pressing book button
-#    And selection seat number 22
-#    Then seat number appears on page
-#
-#    When we are booking flight
-#    Then success message appears
+    And price calculated: 2690 EUR
+
+    When we are pressing book button
+    And selecting seat number
+    Then seat number appears on page
+
+    When we are booking flight
+    Then success message appears
 
     When we are requesting list of reservations
     And last reservation is found
-    Then response contains the following:
-      | name | surname | afrom | ato | bugs | discount | children | flight | adults | seat |
-      | Anna | Vi      | RIX   | SVO | 1    | CCCCCC   | 0        | 17     | 3      | 22   |
+    Then response contains the correct info

@@ -83,7 +83,10 @@ public class BaseFunc {
         wait.until(ExpectedConditions.visibilityOf(we));
         String text = we.getText();
         return text;
+    }
 
+    public String getText(By parent, By child){
+        return wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(parent, child)).getText();
     }
 
     public int removeBracketsAndParseToInt(String number) {
@@ -103,7 +106,7 @@ public class BaseFunc {
         LOGGER.info("Closing browser window");
         // if browser is presented, than we will close it;
         if (driver != null) {
-            driver.close();
+            driver.quit();
         }
     }
 
@@ -115,8 +118,15 @@ public class BaseFunc {
 
     public void inputValue(By locator, String text) {
         LOGGER.info("Inputting some value");
-        WebElement value = findElement(locator);
+        WebElement value = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        //clear the input;
+        value.clear();
         value.sendKeys(text);
+    }
+
+    public void inputValue(By locator, int text){
+        inputValue(locator, String.valueOf(text));
+
     }
 
 }

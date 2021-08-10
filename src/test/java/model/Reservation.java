@@ -10,7 +10,7 @@ public class Reservation {
     private int bugs;
     private String discount;
     private int children;
-    private int flight;
+    private String flight;
     private int adults;
     private int seat;
     private String fullDate;
@@ -94,11 +94,12 @@ public class Reservation {
         this.children = children;
     }
 
-    public int getFlight() {
+    public String getFlight() {
         return flight;
     }
 
-    public void setFlight(int flight) {
+    public void setFlight(String flight) {
+        this.setFullDate(flight + "-05-2018");
         this.flight = flight;
     }
 

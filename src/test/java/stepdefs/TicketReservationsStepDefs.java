@@ -11,9 +11,11 @@ import org.openqa.selenium.WebElement;
 import pageobject.BaseFunc;
 import pageobject.tickets.pages.MainReservationPage;
 import pageobject.tickets.pages.SecondReservationPage;
+import pageobject.tickets.pages.SuccessPage;
 import requesters.ReservationsRequestor;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +23,7 @@ public class TicketReservationsStepDefs {
     private List<Reservation> ReservationsList;
     private Reservation given = new Reservation();
     private Reservation lastReservation;
+    private SuccessPage successPage;
 
     private BaseFunc baseFunc;
     private MainReservationPage mainReservationPage;
@@ -56,24 +59,20 @@ public class TicketReservationsStepDefs {
 //    }
 
 
-    @Then("response contains the following:")
-    public void response_contains(DataTable reservationList) {
-        List<Map<String, String>> reservations = reservationList.asMaps();
+    @Then("response contains the correct info")
+    public void response_contains() {
 
-        for (int i = 0; i < reservations.size(); i++) {
-            Map<String, String> expectedResponse = reservations.get(i);
+        Assertions.assertEquals(given.getName(), lastReservation.getName(), "Name does not match!");
+        Assertions.assertEquals(given.getSurname(), lastReservation.getSurname(), "Surname does not match!");
+        Assertions.assertEquals(given.getDiscount(), lastReservation.getDiscount(), "Discount does not match!");
+        Assertions.assertEquals(given.getAdults(), lastReservation.getAdults(), "Passenger count does not match!");
+        Assertions.assertEquals(given.getChildren(), lastReservation.getChildren(), "Children count does not match!");
+        Assertions.assertEquals(given.getBugs(), lastReservation.getBugs(), "Luggage count does not match!");
+        Assertions.assertEquals(given.getFullDate(), lastReservation.getFullDate(), "Flight date does not match!");
+        Assertions.assertEquals(given.getSeat(), lastReservation.getSeat(), "Seat number does not match!");
+        Assertions.assertEquals(given.getAto(), lastReservation.getAto(), "Arrival airport does not match!");
+        Assertions.assertEquals(given.getAfrom(), lastReservation.getAfrom(), "Departure airport does not match!");
 
-            Assertions.assertEquals(expectedResponse.get("name"), lastReservation.getName(), "Wrong name!");
-            Assertions.assertEquals(expectedResponse.get("surname"), lastReservation.getSurname(), "Wrong surname!");
-            Assertions.assertEquals(expectedResponse.get("afrom"), lastReservation.getAfrom(), "Wrong departure!");
-            Assertions.assertEquals(expectedResponse.get("ato"), lastReservation.getAto(), "Wrong arrival!");
-            Assertions.assertEquals(expectedResponse.get("bugs"), lastReservation.getBugs(), "Wrong bugs!");
-            Assertions.assertEquals(expectedResponse.get("discount"), lastReservation.getDiscount(), "Wrong discount!");
-            Assertions.assertEquals(expectedResponse.get("children"), lastReservation.getChildren(), "Wrong children count!");
-            Assertions.assertEquals(expectedResponse.get("flight"), lastReservation.getFlight(), "Wrong flight date!");
-            Assertions.assertEquals(expectedResponse.get("adults"), lastReservation.getAdults(), "Wrong adults count!");
-            Assertions.assertEquals(expectedResponse.get("seat"), lastReservation.getSeat(), "Wrong seat!");
-        }
 
     }
 
@@ -93,6 +92,7 @@ public class TicketReservationsStepDefs {
         given.setChildren(Integer.parseInt(info.get("children")));
         given.setBugs(Integer.parseInt(info.get("luggage")));
         given.setFullDate(info.get("flight"));
+        System.out.println("");
     }
 
     @When("seat number is: {int}")
@@ -121,21 +121,48 @@ public class TicketReservationsStepDefs {
 
     @When("we are submitting passenger info")
     public void submit_passenger_info() {
-        secondReservationPage.inputName(given.getName());
-        secondReservationPage.inputSurname(given.getSurname());
-        secondReservationPage.inputDiscount(given.getDiscount());
-        secondReservationPage.inputAdults(given.getAdults());
-        secondReservationPage.inputChildren(given.getChildren());
-        secondReservationPage.inputLuggage(given.getBugs());
-        secondReservationPage.selectFlightDate(given.getFullDate());
+        secondReservationPage.submitPassengerInfo(given);
         secondReservationPage.clickOnPrice();
-
     }
 
     @Then("name appears in summary")
     public void check_name_in_summary() {
         List<WebElement> summary = secondReservationPage.getSummary();
-        Assertions.assertEquals(given.getName(), summary.get(0).getText(), "Wrong name in summary");
+        String actual = summary.get(0).getText();
+
+        Assertions.assertEquals(given.getName(), actual.substring(0, actual.length() - 1), "Wrong name in summary");
+    }
+
+    @Then("price calculated: {} EUR")
+    public void check_price(BigDecimal price) {
+        Assertions.assertEquals(price, secondReservationPage.getPrice(), "Wrong price!");
+
+
+    }
+
+    @When("we are pressing book button")
+    public void click_on_book_btn() {
+        secondReservationPage.clickOnBook();
+    }
+
+    @Then("selecting seat number")
+    public void select_seat_number() {
+        secondReservationPage.selectSeat(given.getSeat());
+    }
+
+    @Then("seat number appears on page")
+    public void check_seat_number() {
+        Assertions.assertEquals(given.getSeat(), secondReservationPage.getSeatNr(), "Wrong seat number is shown!");
+    }
+
+    @When("we are booking flight")
+    public void book_flight() {
+        successPage = secondReservationPage.clickOnFinalBook();
+    }
+
+    @Then("success message appears")
+    public void check_success_msg() {
+        Assertions.assertEquals("Thank You for flying with us!", successPage.getSuccessMsg(), "Wrong success message!");
     }
 }
 
