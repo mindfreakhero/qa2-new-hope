@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 public class TicketReservationsStepDefs {
-    private List<Reservation> ReservationsList;
+    private List<Reservation> reservationsList;
     private Reservation given = new Reservation();
     private Reservation lastReservation;
     private SuccessPage successPage;
@@ -33,20 +33,27 @@ public class TicketReservationsStepDefs {
     @Given("we are requesting list of reservations")
     public void request_list() throws IOException {
         ReservationsRequestor requester = new ReservationsRequestor();
-        ReservationsList = requester.getReservationsList();
+        reservationsList = requester.getReservationsList();
     }
 
     @And("last reservation is found")
     public void find_last_reservation() {
-        lastReservation = ReservationsList.get(ReservationsList.size() - 1);
-
+        lastReservation = reservationsList.get(reservationsList.size() - 1);
+        Reservation actual = null;
+        //check if reservation name is name created by random (in case last reservation is not ours);
+        for(Reservation lastReservation : reservationsList) {
+            if (lastReservation.getName().equals(given.getName())) {
+                actual = lastReservation;
+                break;
+            }
+        }
     }
 
 
     @Then("we are printing list of reservations in console")
     public void print_reservations() {
 
-        for (Reservation reservations : ReservationsList) {
+        for (Reservation reservations : reservationsList) {
             System.out.println(reservations.toString());
         }
 

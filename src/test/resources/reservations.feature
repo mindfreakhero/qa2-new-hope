@@ -5,7 +5,7 @@ Feature: check if reservation is saved correctly;
   #sna4ala preconditions, chobi ih mozhno bilo menjatj vhodnije dannije
     Given flight from "RIX" to "SVO"
     And passenger info:
-      | name     | Anna       |
+      | name     | random     |
       | surname  | Vi         |
       | discount | CCCCCC     |
       | adults   | 3          |

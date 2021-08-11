@@ -1,5 +1,7 @@
 package model;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 public class Reservation {
 
     private long id;
@@ -43,7 +45,8 @@ public class Reservation {
     }
 
     public void setName(String name) {
-        this.name = name;
+        //if we receive random, then insert random word;
+        this.name = name.equals("random") ? RandomStringUtils.randomAlphabetic(10): name;
     }
 
     public String getSurname() {
