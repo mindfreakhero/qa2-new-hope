@@ -32,12 +32,13 @@ public class SecondReservationPage {
 
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
     private BaseFunc baseFunc;
+    private Reservation reservation;
 
     public SecondReservationPage(BaseFunc baseFunc) {
         this.baseFunc = baseFunc;
     }
 
-    public void submitPassengerInfo(Reservation reservation) {
+    public SecondReservationPage submitPassengerInfo(Reservation reservation) {
         LOGGER.info("Inputting a name");
         baseFunc.inputValue(NAME, reservation.getName());
         baseFunc.inputValue(SURNAME, reservation.getSurname());
@@ -46,15 +47,19 @@ public class SecondReservationPage {
         baseFunc.inputValue(HOW_MANY_CHILDREN, reservation.getChildren());
         baseFunc.inputValue(LUGGAGE, reservation.getBugs());
         baseFunc.selectFromDropDown(FLIGHT_DATE, reservation.getFullDate());
+
+        return this;
     }
 
 
-    public void clickOnBook() {
+    public SecondReservationPage clickOnBook() {
         LOGGER.info("Clicking on book");
         baseFunc.click(BOOK_BTN);
+
+        return this;
     }
 
-    public void selectSeat(int nr) {
+    public SecondReservationPage selectSeat(int nr) {
         LOGGER.info("Selecting a seat");
         // checking if there is required seat;
         WebElement seat = findSeat(nr);
@@ -62,7 +67,12 @@ public class SecondReservationPage {
         // if there is seat - click on it;
         baseFunc.click(seat);
 
+        return this;
+    }
 
+    public SecondReservationPage checkIfSeatIs(int seat) {
+        Assertions.assertEquals(seat, getSeatNr(), "Wrong seat number is shown!");
+        return this;
     }
 
     private WebElement findSeat(int seat) {
@@ -85,6 +95,26 @@ public class SecondReservationPage {
 
     public List<WebElement> getAirports() {
         return baseFunc.findElements(INFO_TXT);
+    }
+
+    public SecondReservationPage checkIfAirportsAre(String from, String to) {
+
+        List<WebElement> airports = getAirports();
+        Assertions.assertEquals(from, airports.get(0).getText(), "Wrong departure name!");
+        Assertions.assertEquals(to, airports.get(1).getText(), "Wrong arrival name");
+        // return this examplar of object (this page, not refreshed)
+        return this;
+
+    }
+
+    public SecondReservationPage checkIfNameIs(String name) {
+        Assertions.assertEquals(name, reservation.getName(), "Wrong name in summary");
+        return this;
+    }
+
+    public SecondReservationPage checkIfTotalPriceIs(BigDecimal price) {
+        Assertions.assertEquals(price, getPrice(), "Wrong price!");
+        return this;
     }
 
     public List<WebElement> getSummary() {
